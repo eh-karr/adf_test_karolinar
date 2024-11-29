@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Lookup12",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -39,7 +39,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Lookup12",
 						"dependencyConditions": [
 							"Succeeded"
 						]
