@@ -1,0 +1,9 @@
+{
+	"name": "adf-eh-upskilling-karolinar",
+	"location": "northeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a1f54402-481d-43b1-9b1d-35c659d0fac0",
+		"tenantId": "7b4a3de9-7eb5-4f76-8b94-610e737564b9"
+	}
+}

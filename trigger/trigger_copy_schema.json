@@ -1,0 +1,29 @@
+{
+	"name": "trigger_copy_schema",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "lookup_copy1",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"table_name": "x",
+					"table_schema": "x"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 10,
+				"startTime": "2024-10-21T12:39:00",
+				"endTime": "2024-10-22T12:39:00",
+				"timeZone": "Central European Standard Time"
+			}
+		}
+	}
+}

@@ -1,0 +1,155 @@
+{
+	"name": "lookup_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.02:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT schema_name(schema_id) as 'schema', name FROM sys.tables where  schema_name(schema_id) = 'SalesLT'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference",
+						"parameters": {
+							"table_name": "1",
+							"table_schema": "1"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.02:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": {
+										"value": "Truncate table SalesLT2.@{item().name}",
+										"type": "Expression"
+									},
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureSqlTable2",
+									"type": "DatasetReference",
+									"parameters": {
+										"table_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										},
+										"table_schema": {
+											"value": "@item().schema",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureSqlTable2",
+									"type": "DatasetReference",
+									"parameters": {
+										"table_name": {
+											"value": "@item().name",
+											"type": "Expression"
+										},
+										"table_schema": {
+											"value": "@variables('TargetTableSchemaValue')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"table_name": {
+				"type": "string"
+			},
+			"table_schema": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"TableSchemaValue": {
+				"type": "String",
+				"defaultValue": "SalesLT"
+			},
+			"TargetTableSchemaValue": {
+				"type": "String",
+				"defaultValue": "SalesLT2"
+			},
+			"table_name": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-10-21T12:45:35Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,11 @@
+{
+	"name": "DataLake",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://adlehupskillingkr.dfs.core.windows.net/"
+		}
+	}
+}
