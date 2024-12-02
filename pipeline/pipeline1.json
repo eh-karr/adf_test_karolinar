@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_data_from_storage",
+				"name": "Copy_data_from_storage_1",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
